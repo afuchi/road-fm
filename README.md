@@ -12,9 +12,17 @@ A game-agnostic radio companion for listening to YouTube playlists together. ROA
 
 The room host controls station changes, play/pause, and track skips. Each listener controls their own volume. Keep the YouTube player visible; the browser may require a click on Play before playback begins.
 
+## Deploy from GitHub
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/afuchi/road-fm)
+
+Select **Deploy Blueprint**, sign in to Render with GitHub, and authorize the ROAD FM repository. Render reads `render.yaml`, builds the Node app, and gives you an HTTPS address to share. The included Web Service supports the room's WebSocket connection, unlike GitHub Pages.
+
+The free Render service may sleep while idle, so the first visit or room after a quiet period can take a little longer to start. Active rooms are in memory and end when the service restarts or redeploys.
+
 ## Hosting with friends
 
-The included server is suitable for local testing. To connect from outside your home network, deploy this Node app to a host that supports persistent WebSockets and HTTPS; ROAD FM uses secure WebSockets automatically when served over HTTPS. Do not expose an unauthenticated development server directly to the public internet. Treat room codes as private links and share them only with people you trust.
+For other hosts, choose a service that supports persistent WebSockets and HTTPS; ROAD FM uses secure WebSockets automatically when served over HTTPS. Do not expose an unauthenticated development server directly to the public internet. Treat room codes as private links and share them only with people you trust.
 
 ## Limitations
 
