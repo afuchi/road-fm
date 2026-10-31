@@ -238,6 +238,8 @@
         else if (message.type === 'command') applyCommand(message.action);
         else if (message.type === 'room_closed' && (!message.roomCode || message.roomCode === currentRoom)) {
           currentRoom = ''; isHost = false; members = 0; lastRoomState = null; updateRoomView(); setStatus('The host closed the room. Local radio is still available.'); showToast('Listening room closed.');
+        } else if (message.type === 'left_room') {
+          currentRoom = ''; isHost = false; members = 0; lastRoomState = null; updateRoomView(); setStatus('You left the listening room. Local radio is still available.');
         } else if (message.type === 'error') { setStatus(message.message || 'Radio network error.'); showToast(message.message || 'Radio network error.'); }
       });
     }
