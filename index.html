@@ -88,31 +88,29 @@
     @media(max-width:760px) { .app{padding:0 16px 20px}.listening-room{grid-template-columns:1fr;gap:12px}.room-actions{flex-wrap:wrap}.room-info{grid-column:auto}.workspace{grid-template-columns:1fr}.stations{padding:20px 0;border-right:0;border-bottom:1px solid var(--line)}.deck{padding:20px 0}.now-playing h2{font-size:26px} }
     @media(max-width:460px) { .masthead{min-height:67px}.brand-caption{display:none}.room-actions{display:grid;grid-template-columns:1fr 1fr}.room-actions .primary{grid-column:1/-1}.join-code{width:100%}.room-info.active{flex-wrap:wrap}.transport{align-items:flex-start;flex-direction:column;padding:12px 0}.transport-buttons{width:100%;justify-content:space-between}.volume{width:100%;justify-content:space-between}.volume input{flex:1}.status-line{align-items:flex-start;flex-direction:column} }
     @media(prefers-reduced-motion:reduce) { *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important} }
-    body.overlay-mode .app { width:100%; min-height:100vh; padding:7px 11px 9px; }
+    body.overlay-mode .app { width:100%; min-height:0; padding:4px 8px; }
     body.overlay-mode .masthead { min-height:42px; }
     body.overlay-mode .brand-mark { width:30px; height:30px; font-size:14px; }
     body.overlay-mode .brand-name { font-size:21px; }
-    body.overlay-mode .brand-caption, body.overlay-mode .eyebrow, body.overlay-mode .stations, body.overlay-mode .fine-print { display:none; }
-    body.overlay-mode .listening-room { grid-template-columns:1fr; gap:7px; padding:9px 0; }
-    body.overlay-mode .listening-room h1 { font-size:19px; }
-    body.overlay-mode .room-actions { gap:5px; }
-    body.overlay-mode .room-actions button, body.overlay-mode .room-actions input, body.overlay-mode .room-info button { min-height:32px; }
-    body.overlay-mode .join-code { width:100px; }
-    body.overlay-mode .room-info { gap:7px; }
+    body.overlay-mode .masthead, body.overlay-mode .listening-room, body.overlay-mode .stations, body.overlay-mode .fine-print, body.overlay-mode .eyebrow { display:none; }
     body.overlay-mode .workspace { display:block; min-height:0; }
-    body.overlay-mode .deck { padding:9px 0 0; }
-    body.overlay-mode .now-playing { align-items:center; gap:8px; margin-bottom:7px; }
-    body.overlay-mode .now-playing h2 { max-width:290px; font-size:21px; }
-    body.overlay-mode .track-title { margin-top:3px; }
-    body.overlay-mode .overlay-tools { display:flex; }
-    body.overlay-mode .player-frame { width:min(100%,356px); height:200px; max-height:none; aspect-ratio:auto; margin:0 auto; }
-    body.overlay-mode .transport { min-height:48px; gap:8px; }
-    body.overlay-mode .transport-buttons { gap:4px; }
-    body.overlay-mode .transport button { min-width:36px; min-height:34px; padding:0 7px; }
-    body.overlay-mode .transport button.play-button { min-width:78px; }
-    body.overlay-mode .volume input { width:80px; }
-    body.overlay-mode .status-line { min-height:25px; padding-top:7px; }
-    body.overlay-mode .overlay-hotkeys { display:block; margin-top:4px; }
+    body.overlay-mode .deck { display:grid; grid-template-columns:200px minmax(0,1fr); grid-template-rows:auto auto auto auto; align-items:center; column-gap:12px; row-gap:1px; padding:0; }
+    body.overlay-mode .player-frame { grid-column:1; grid-row:1/5; width:200px; height:200px; max-height:none; aspect-ratio:auto; margin:0; }
+    body.overlay-mode .now-playing { grid-column:2; grid-row:1; align-items:flex-start; gap:6px; margin:0; }
+    body.overlay-mode .now-playing h2 { max-width:260px; font-size:18px; }
+    body.overlay-mode .track-title { max-width:320px; margin-top:2px; }
+    body.overlay-mode .overlay-tools { display:flex; gap:4px; margin-top:4px; }
+    body.overlay-mode .overlay-tools button { min-height:27px; padding:0 7px; font-size:10px; }
+    body.overlay-mode .channel-position { min-width:38px; font-size:9px; }
+    body.overlay-mode .transport { grid-column:2; grid-row:2; display:grid; grid-template-columns:1fr; justify-content:center; gap:5px; min-height:0; padding:2px 0; border:0; }
+    body.overlay-mode .transport-buttons { justify-content:center; gap:5px; width:100%; }
+    body.overlay-mode .transport button { min-width:34px; min-height:32px; padding:0 7px; }
+    body.overlay-mode .transport button.play-button { min-width:74px; }
+    body.overlay-mode .volume { justify-content:center; gap:8px; font-size:9px; }
+    body.overlay-mode .volume input { width:100px; }
+    body.overlay-mode .status-line { grid-column:2; grid-row:3; min-height:16px; padding:0; font-size:9px; }
+    body.overlay-mode #controlHint { display:none; }
+    body.overlay-mode .overlay-hotkeys { grid-column:2; grid-row:4; display:block; margin:0; font-size:8px; white-space:nowrap; }
   </style>
 </head>
 <body>
@@ -137,7 +135,7 @@
         </form>
       </aside>
       <main class="deck">
-        <div class="now-playing"><div><div class="station-tag">NOW TUNED TO</div><h2 id="currentStation">NO STATION SELECTED</h2><div class="overlay-tools"><button id="previousStation" title="Previous station · Ctrl+Alt+Up" aria-label="Previous station" disabled>&#9664; CH</button><span id="channelPosition" class="channel-position">-- / 00</span><button id="nextStation" title="Next station · Ctrl+Alt+Down" aria-label="Next station" disabled>CH &#9654;</button><button id="manageStations" class="ghost">Manage stations</button></div><p id="trackTitle" class="track-title">Save a playlist, then tune in.</p></div><div id="onAir" class="on-air">STANDBY</div></div>
+        <div class="now-playing"><div><div class="station-tag">NOW TUNED TO</div><h2 id="currentStation">NO STATION SELECTED</h2><div class="overlay-tools"><button id="previousStation" title="Previous station · Ctrl+Alt+Up" aria-label="Previous station" disabled>&#9664; CH</button><span id="channelPosition" class="channel-position">-- / 00</span><button id="nextStation" title="Next station · Ctrl+Alt+Down" aria-label="Next station" disabled>CH &#9654;</button><button id="manageStations" class="ghost">Full app</button></div><p id="trackTitle" class="track-title">Save a playlist, then tune in.</p></div><div id="onAir" class="on-air">STANDBY</div></div>
         <div class="player-frame"><div id="player"></div></div>
         <div class="transport" aria-label="Radio controls">
           <div class="transport-buttons"><button id="previous" title="Previous track" aria-label="Previous track" disabled>&#9198;</button><button id="playPause" class="primary play-button" disabled><span id="playIcon" aria-hidden="true">&#9654;</span> <span id="playLabel">Play</span></button><button id="next" title="Next track" aria-label="Next track" disabled>&#9197;</button><button id="mute" title="Mute" aria-label="Mute" disabled>&#128266;</button></div>

@@ -35,10 +35,10 @@ function configureExternalLinks(window) {
 
 function createOverlay() {
   overlayWindow = new BrowserWindow({
-    width: 450,
-    height: 550,
-    minWidth: 390,
-    minHeight: 500,
+    width: 620,
+    height: 300,
+    minWidth: 560,
+    minHeight: 280,
     title: 'ROAD FM',
     autoHideMenuBar: true,
     alwaysOnTop: true,

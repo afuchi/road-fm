@@ -17,8 +17,8 @@ The room host controls station changes, play/pause, and track skips. Each listen
 The optional Electron companion opens ROAD FM in an always-on-top compact window and provides system-wide radio shortcuts while the game is focused. Use the game in borderless-windowed or windowed mode; exclusive fullscreen can cover desktop overlays.
 
 1. Run `desktop/start.cmd` from the cloned repository. On first run it installs Electron.
-2. In the overlay, choose **Manage stations** to add presets, then close the library window.
-3. Join or create a listening room in the overlay. Start playback once inside YouTube if prompted.
+2. Select **Full app** in the overlay to add station presets or create/join a listening room. Presets are shared between the overlay and full app.
+3. Return to the overlay and tune channels there. Start playback once inside YouTube if prompted.
 
 Shortcuts while the desktop companion is running:
 
@@ -26,7 +26,7 @@ Shortcuts while the desktop companion is running:
 - `Ctrl+Alt+Left/Right`: previous/next track
 - `Ctrl+Alt+Space`: play/pause
 
-This is a desktop overlay, not an injected game mod. It cannot mix music into the game's 3D audio or appear over exclusive-fullscreen rendering. The compact view keeps a 356×200 YouTube player visible; hiding or reducing YouTube to audio-only isn't supported by its embedded player. A video-free radio mode would need separately licensed audio-only streams.
+This is a desktop overlay, not an injected game mod. It cannot mix music into the game's 3D audio or appear over exclusive-fullscreen rendering. The compact view keeps a 200×200 YouTube player visible; hiding or reducing YouTube to audio-only isn't supported by its embedded player. A video-free radio mode would need separately licensed audio-only streams.
 
 ## Deploy from GitHub
 
