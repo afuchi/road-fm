@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171a18">
+  <title>ROAD FM | Radio Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: dark; --ink:#e8e8dc; --muted:#9c9f96; --faint:#696d65; --canvas:#171a18; --panel:#202421; --raised:#292e2a; --line:#3a403b; --yellow:#f1c84b; --green:#a4c7a8; --red:#d97b62; --mono:"IBM Plex Mono",Consolas,monospace; --display:"Barlow Condensed","Arial Narrow",sans-serif; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-width:320px; min-height:100vh; color:var(--ink); background:var(--canvas) repeating-linear-gradient(135deg,transparent 0 47px,#ffffff04 48px 49px); font:13px var(--mono); }
+    button,input { font:inherit; }
+    button { min-height:40px; padding:0 14px; border:1px solid var(--line); border-radius:3px; color:var(--ink); background:var(--raised); cursor:pointer; transition:.15s ease; }
+    button:hover:not(:disabled) { border-color:var(--yellow); }
+    button:focus-visible,input:focus-visible { outline:2px solid var(--yellow); outline-offset:2px; }
+    button:disabled { cursor:not-allowed; opacity:.42; }
+    button.primary { border-color:var(--yellow); color:#191b17; background:var(--yellow); font-weight:600; }
+    button.primary:hover:not(:disabled) { background:#ffda64; }
+    button.ghost { background:transparent; }
+    input { width:100%; min-width:0; height:40px; padding:0 11px; border:1px solid var(--line); border-radius:3px; color:var(--ink); background:#141715; }
+    input::placeholder { color:#777b72; }
+    .app { width:min(1160px,100%); margin:auto; padding:0 26px 28px; animation:appear .28s ease both; }
+    @keyframes appear { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } }
+    .masthead { display:flex; align-items:center; justify-content:space-between; min-height:78px; border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:13px; }
+    .brand-mark { display:grid; place-items:center; width:38px; height:38px; border:1px solid var(--yellow); color:var(--yellow); font:800 17px var(--display); transform:skew(-7deg); }
+    .brand-name { font:800 28px/.8 var(--display); }
+    .brand-name span { color:var(--yellow); }
+    .brand-caption,.eyebrow,.micro { color:var(--muted); font:500 10px/1.5 var(--mono); }
+    .brand-caption { margin-top:6px; }
+    .connection { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:11px; }
+    .connection-dot { width:8px; aspect-ratio:1; border-radius:50%; background:var(--faint); }
+    .connection-dot.connected { background:var(--green); box-shadow:0 0 10px #a4c7a855; }
+    .connection-dot.error { background:var(--red); }
+    .listening-room { display:grid; grid-template-columns:minmax(200px,1fr) auto; align-items:center; gap:20px; padding:18px 0; border-bottom:1px solid var(--line); }
+    .listening-room h1 { margin:1px 0 0; font:600 26px/1 var(--display); }
+    .room-actions { display:flex; align-items:center; gap:8px; }
+    .room-actions[hidden] { display:none; }
+    .join-code { width:120px; text-align:center; text-transform:uppercase; letter-spacing:.12em; }
+    .room-info { display:none; grid-column:1/-1; align-items:center; gap:12px; color:var(--muted); font-size:11px; }
+    .room-info.active { display:flex; }
+    .room-code { color:var(--yellow); font-size:16px; letter-spacing:.14em; }
+    .spacer { flex:1; }
+    .workspace { display:grid; grid-template-columns:300px minmax(0,1fr); min-height:610px; }
+    .stations { padding:23px 20px 20px 0; border-right:1px solid var(--line); }
+    .section-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px; }
+    .section-head h2 { margin:0; font:600 20px/1 var(--display); }
+    .station-count { color:var(--faint); font-size:10px; }
+    .station-list { display:grid; gap:5px; margin:0 0 20px; padding:0; list-style:none; }
+    .station-row { display:grid; grid-template-columns:minmax(0,1fr) 34px; gap:5px; }
+    .station-tune { display:flex; align-items:center; width:100%; min-width:0; min-height:53px; padding:7px 10px; text-align:left; background:transparent; }
+    .station-tune.active { border-left:3px solid var(--yellow); background:#f1c84b0e; }
+    .station-tune:disabled { opacity:.62; }
+    .station-number { width:34px; flex:none; color:var(--faint); font-size:10px; }
+    .station-name { overflow:hidden; color:var(--ink); font-size:12px; text-overflow:ellipsis; white-space:nowrap; }
+    .station-remove { min-height:40px; padding:0; color:var(--muted); font-size:17px; }
+    .empty-stations { padding:14px 10px; border:1px dashed var(--line); color:var(--muted); font-size:11px; line-height:1.6; }
+    .add-station { display:grid; gap:8px; padding-top:16px; border-top:1px solid var(--line); }
+    .add-station h3 { margin:0 0 3px; font:600 16px/1 var(--display); }
+    .add-station label { color:var(--muted); font-size:10px; }
+    .deck { min-width:0; padding:23px 0 20px 23px; }
+    .now-playing { display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:14px; }
+    .station-tag { margin-bottom:3px; color:var(--yellow); font-size:10px; }
+    .now-playing h2 { overflow:hidden; max-width:570px; margin:0; font:700 31px/.98 var(--display); text-overflow:ellipsis; white-space:nowrap; }
+    .track-title { min-height:18px; margin:7px 0 0; overflow:hidden; color:var(--muted); font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
+    .on-air { display:flex; align-items:center; gap:7px; flex:none; color:var(--green); font-size:10px; }
+    .on-air::before { width:7px; aspect-ratio:1; border-radius:50%; background:currentColor; content:""; }
+    .player-frame { width:100%; aspect-ratio:16/9; max-height:400px; overflow:hidden; border:1px solid var(--line); background:#080a09; }
+    #player,#player iframe { width:100%; height:100%; }
+    .transport { display:flex; align-items:center; justify-content:space-between; gap:14px; min-height:70px; border-bottom:1px solid var(--line); }
+    .transport-buttons { display:flex; align-items:center; gap:6px; }
+    .transport button { min-width:44px; padding:0 11px; font-size:11px; }
+    .transport button.play-button { min-width:92px; }
+    .volume { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:10px; white-space:nowrap; }
+    .volume input { width:112px; height:auto; padding:0; accent-color:var(--yellow); }
+    .status-line { display:flex; align-items:baseline; justify-content:space-between; gap:12px; min-height:48px; padding-top:13px; color:var(--muted); font-size:11px; }
+    .host-badge { color:var(--yellow); }
+    .fine-print { margin:20px 0 0; padding-top:12px; border-top:1px solid var(--line); color:var(--faint); font-size:10px; line-height:1.7; }
+    .toast { position:fixed; right:20px; bottom:20px; z-index:5; max-width:min(360px,calc(100vw - 40px)); padding:12px 15px; border:1px solid var(--line); color:var(--ink); background:var(--raised); opacity:0; pointer-events:none; transform:translateY(6px); transition:.16s ease; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    @media(max-width:760px) { .app{padding:0 16px 20px}.listening-room{grid-template-columns:1fr;gap:12px}.room-actions{flex-wrap:wrap}.room-info{grid-column:auto}.workspace{grid-template-columns:1fr}.stations{padding:20px 0;border-right:0;border-bottom:1px solid var(--line)}.deck{padding:20px 0}.now-playing h2{font-size:26px} }
+    @media(max-width:460px) { .masthead{min-height:67px}.brand-caption{display:none}.room-actions{display:grid;grid-template-columns:1fr 1fr}.room-actions .primary{grid-column:1/-1}.join-code{width:100%}.room-info.active{flex-wrap:wrap}.transport{align-items:flex-start;flex-direction:column;padding:12px 0}.transport-buttons{width:100%;justify-content:space-between}.volume{width:100%;justify-content:space-between}.volume input{flex:1}.status-line{align-items:flex-start;flex-direction:column} }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important} }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="masthead">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">RF</div><div><div class="brand-name">ROAD <span>FM</span></div><div class="brand-caption">RADIO COMPANION</div></div></div>
+      <div class="connection" aria-live="polite"><span id="connectionDot" class="connection-dot"></span><span id="connectionLabel">Connecting to radio network</span></div>
+    </header>
+    <section class="listening-room" aria-labelledby="roomTitle">
+      <div><div class="eyebrow">RADIO COMPANION · 01</div><h1 id="roomTitle">Listening room</h1></div>
+      <div class="room-actions" id="roomActions"><button id="createRoom" class="primary" disabled>Start a room</button><input id="roomCodeInput" class="join-code" maxlength="6" autocomplete="off" placeholder="ROOM CODE" aria-label="Room code"><button id="joinRoom" disabled>Join</button></div>
+      <div id="roomInfo" class="room-info"><span class="micro">ROOM</span><strong id="roomCodeDisplay" class="room-code"></strong><button id="copyRoom" class="ghost" title="Copy room code">Copy</button><span id="memberCount">1 driver</span><span id="roleLabel" class="host-badge"></span><span class="spacer"></span><button id="leaveRoom" class="ghost">Leave room</button></div>
+    </section>
+    <div class="workspace">
+      <aside class="stations" aria-labelledby="stationsTitle">
+        <div class="section-head"><h2 id="stationsTitle">Station presets</h2><span id="stationCount" class="station-count">0 SAVED</span></div>
+        <ul id="stationList" class="station-list"></ul>
+        <form id="stationForm" class="add-station">
+          <h3>Add a station</h3><label for="stationName">Station name</label><input id="stationName" maxlength="36" placeholder="Night haul country" required>
+          <label for="playlistUrl">YouTube playlist URL</label><input id="playlistUrl" type="url" placeholder="youtube.com/playlist?list=..." required>
+          <button class="ghost" type="submit">Save station</button>
+        </form>
+      </aside>
+      <main class="deck">
+        <div class="now-playing"><div><div class="station-tag">NOW TUNED TO</div><h2 id="currentStation">NO STATION SELECTED</h2><p id="trackTitle" class="track-title">Save a playlist, then tune in.</p></div><div id="onAir" class="on-air">STANDBY</div></div>
+        <div class="player-frame"><div id="player"></div></div>
+        <div class="transport" aria-label="Radio controls">
+          <div class="transport-buttons"><button id="previous" title="Previous track" aria-label="Previous track" disabled>&#9198;</button><button id="playPause" class="primary play-button" disabled><span id="playIcon" aria-hidden="true">&#9654;</span> <span id="playLabel">Play</span></button><button id="next" title="Next track" aria-label="Next track" disabled>&#9197;</button><button id="mute" title="Mute" aria-label="Mute" disabled>&#128266;</button></div>
+          <label class="volume" for="volume">LOCAL VOLUME <input id="volume" type="range" min="0" max="100" value="65"></label>
+        </div>
+        <div class="status-line"><span id="status" role="status" aria-live="polite">Starting radio network...</span><span id="controlHint">Create a room to listen together.</span></div>
+        <p class="fine-print">Playback uses YouTube's official embedded player on each listener's device. The room synchronizes station and transport controls, not audio. Keep the player visible. Public or unlisted playlists work best; embeds can be limited by region, age, or video settings. ROAD FM runs alongside your game and does not modify its audio.</p>
+      </main>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script>
+    const STORAGE_KEY = 'roadfm.stations.v1';
+    const controls = ['previous', 'playPause', 'next', 'mute'];
+    const $ = id => document.getElementById(id);
+    let player = null, playerReady = false, socket = null, currentRoom = '', isHost = false, members = 0;
+    let stations = readStations(), activeStation = null, loadedPlaylistId = '', lastRoomState = null, isMuted = false, toastTimer;
+
+    function readStations() {
+      try { const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); return Array.isArray(data) ? data.filter(item => item && item.id && item.name && item.playlistId) : []; }
+      catch { return []; }
+    }
+    function saveStations() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(stations)); } catch { showToast('Could not save stations in this browser.'); } }
+    function showToast(message) { $('toast').textContent = message; $('toast').classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => $('toast').classList.remove('show'), 2600); }
+    function setStatus(message) { $('status').textContent = message; }
+    function setConnection(state, message) {
+      $('connectionDot').className = 'connection-dot' + (state ? ' ' + state : ''); $('connectionLabel').textContent = message;
+      $('createRoom').disabled = state !== 'connected' || !!currentRoom; $('joinRoom').disabled = state !== 'connected' || !!currentRoom;
+    }
+    function setControlAccess() {
+      const enabled = !!activeStation && (isHost || !currentRoom);
+      controls.forEach(id => $(id).disabled = !enabled);
+      $('roleLabel').textContent = currentRoom ? (isHost ? 'HOST CONTROLS' : 'LISTENING') : '';
+      $('controlHint').textContent = currentRoom ? (isHost ? 'Your controls lead the room. Volume stays local.' : 'The host controls the station. Your volume stays local.') : 'Create a room to listen together.';
+      renderStations();
+    }
+    function playlistIdFromUrl(raw) { try { return new URL(raw.trim()).searchParams.get('list'); } catch { return null; } }
+    function send(data) { if (socket && socket.readyState === WebSocket.OPEN) socket.send(JSON.stringify(data)); else showToast('Radio network is offline.'); }
+    function updateRoomView() {
+      const inRoom = !!currentRoom; $('roomInfo').classList.toggle('active', inRoom); $('roomActions').hidden = inRoom;
+      $('roomCodeDisplay').textContent = currentRoom; $('memberCount').textContent = members + (members === 1 ? ' driver' : ' drivers'); setControlAccess();
+    }
+    function renderStations() {
+      const list = $('stationList'); list.replaceChildren(); $('stationCount').textContent = stations.length + ' SAVED';
+      if (!stations.length) { const empty = document.createElement('li'); empty.className = 'empty-stations'; empty.textContent = 'No presets yet. Add a YouTube playlist to build your dial.'; list.append(empty); return; }
+      stations.forEach((station, index) => {
+        const row = document.createElement('li'); row.className = 'station-row';
+        const tune = document.createElement('button'); tune.className = 'station-tune' + (activeStation && activeStation.id === station.id ? ' active' : ''); tune.disabled = currentRoom && !isHost; tune.type = 'button';
+        const number = document.createElement('span'); number.className = 'station-number'; number.textContent = String(index + 1).padStart(2, '0');
+        const name = document.createElement('span'); name.className = 'station-name'; name.textContent = station.name; tune.append(number, name); tune.addEventListener('click', () => tuneStation(station));
+        const remove = document.createElement('button'); remove.className = 'station-remove ghost'; remove.type = 'button'; remove.title = 'Remove station'; remove.setAttribute('aria-label', 'Remove ' + station.name); remove.textContent = '×';
+        remove.addEventListener('click', () => { stations = stations.filter(item => item.id !== station.id); saveStations(); renderStations(); });
+        row.append(tune, remove); list.append(row);
+      });
+    }
+    function updateTrackTitle() { if (!playerReady || !player || !player.getVideoData) return; const data = player.getVideoData(); if (data && data.title) $('trackTitle').textContent = data.title; }
+    function setPlayingUI(playing) {
+      $('playIcon').innerHTML = playing ? '&#10074;&#10074;' : '&#9654;'; $('playLabel').textContent = playing ? 'Pause' : 'Play';
+      $('onAir').textContent = playing ? 'ON AIR' : (activeStation ? 'READY' : 'STANDBY'); $('onAir').style.color = playing ? 'var(--green)' : 'var(--muted)';
+    }
+    function roomSnapshot() {
+      if (!activeStation) return null;
+      const state = playerReady && player ? player.getPlayerState() : -1;
+      const index = playerReady && player && player.getPlaylistIndex() >= 0 ? player.getPlaylistIndex() : 0;
+      return { stationId:activeStation.id, stationName:activeStation.name, playlistId:activeStation.playlistId, index, currentTime:playerReady && player ? Math.max(0, player.getCurrentTime() || 0) : 0, playing:state === YT.PlayerState.PLAYING, updatedAt:Date.now() };
+    }
+    function publishPlayback() { if (isHost && currentRoom && activeStation) send({ type:'playback', state:roomSnapshot() }); }
+    function publishStation() {
+      if (!isHost || !currentRoom || !activeStation) return;
+      const state = roomSnapshot(); state.index = 0; state.currentTime = 0; state.playing = false; send({ type:'station', state });
+    }
+    function cueStation(station, index = 0) {
+      if (!playerReady || !player) return;
+      loadedPlaylistId = station.playlistId; player.cuePlaylist({ listType:'playlist', list:station.playlistId, index }); setPlayingUI(false); setTimeout(updateTrackTitle, 850);
+    }
+    function tuneStation(station, broadcast = true) {
+      if (currentRoom && !isHost) return;
+      activeStation = station; $('currentStation').textContent = station.name; $('trackTitle').textContent = 'Playlist cued. Press Play to tune in.';
+      cueStation(station); renderStations(); setControlAccess(); setStatus('Tuned to ' + station.name + '.'); if (broadcast) publishStation();
+    }
+    function syncTransport(state) {
+      if (!playerReady || !player || !state || state.playlistId !== loadedPlaylistId) return;
+      const desiredIndex = Math.max(0, Number(state.index) || 0), actualIndex = player.getPlaylistIndex();
+      if (actualIndex >= 0 && actualIndex !== desiredIndex) { player.playVideoAt(desiredIndex); setTimeout(() => syncTransport({ ...state, updatedAt:Date.now(), currentTime:0 }), 900); return; }
+      const drift = Math.abs((player.getCurrentTime() || 0) - (Number(state.currentTime) || 0));
+      if (state.playing && drift > 2.25) { const elapsed = Math.max(0, Date.now() - Number(state.updatedAt || Date.now())) / 1000; player.seekTo((Number(state.currentTime) || 0) + elapsed, true); }
+      if (state.playing && player.getPlayerState() !== YT.PlayerState.PLAYING) player.playVideo();
+      if (!state.playing && player.getPlayerState() === YT.PlayerState.PLAYING) player.pauseVideo();
+      setPlayingUI(!!state.playing); setTimeout(updateTrackTitle, 250);
+    }
+    function applyRoomState(state) {
+      if (!state || !state.playlistId) return;
+      lastRoomState = state; activeStation = { id:state.stationId || state.playlistId, name:state.stationName || 'Shared station', playlistId:state.playlistId };
+      $('currentStation').textContent = activeStation.name; renderStations(); setControlAccess();
+      if (!playerReady) return;
+      if (loadedPlaylistId !== state.playlistId) { cueStation(activeStation, Math.max(0, Number(state.index) || 0)); setTimeout(() => syncTransport(lastRoomState), 1100); }
+      else syncTransport(state);
+    }
+    function applyCommand(action) {
+      if (!playerReady || !player) return;
+      if (action === 'play') player.playVideo(); if (action === 'pause') player.pauseVideo(); if (action === 'next') player.nextVideo(); if (action === 'previous') player.previousVideo();
+      setTimeout(() => { updateTrackTitle(); publishPlayback(); }, 500);
+    }
+    function control(action) {
+      if (!activeStation || !playerReady) return;
+      if (action === 'toggle') action = player.getPlayerState() === YT.PlayerState.PLAYING ? 'pause' : 'play';
+      applyCommand(action); if (currentRoom && isHost) send({ type:'command', action });
+    }
+    function connect() {
+      const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'; socket = new WebSocket(protocol + '//' + location.host + '/sync');
+      socket.addEventListener('open', () => setConnection('connected', 'RADIO NETWORK READY'));
+      socket.addEventListener('close', () => {
+        setConnection('error', 'RADIO NETWORK OFFLINE');
+        if (currentRoom) { currentRoom = ''; isHost = false; members = 0; updateRoomView(); setStatus('Connection lost. Local playback is still available.'); }
+        setTimeout(connect, 2500);
+      });
+      socket.addEventListener('error', () => setConnection('error', 'RADIO NETWORK OFFLINE'));
+      socket.addEventListener('message', event => {
+        let message; try { message = JSON.parse(event.data); } catch { return; }
+        if (message.type === 'room_created' || message.type === 'room_joined') {
+          currentRoom = message.roomCode; isHost = message.type === 'room_created'; members = message.members || 1; updateRoomView();
+          setStatus(isHost ? 'Room is open. Share the code with your group.' : 'Joined room. Syncing the host station.');
+          if (message.state) applyRoomState(message.state); else if (isHost && activeStation) publishStation();
+        } else if (message.type === 'room_update') {
+          members = message.members || 1; $('memberCount').textContent = members + (members === 1 ? ' driver' : ' drivers');
+        } else if (message.type === 'playback' || message.type === 'station') applyRoomState(message.state);
+        else if (message.type === 'command') applyCommand(message.action);
+        else if (message.type === 'room_closed' && (!message.roomCode || message.roomCode === currentRoom)) {
+          currentRoom = ''; isHost = false; members = 0; lastRoomState = null; updateRoomView(); setStatus('The host closed the room. Local radio is still available.'); showToast('Listening room closed.');
+        } else if (message.type === 'error') { setStatus(message.message || 'Radio network error.'); showToast(message.message || 'Radio network error.'); }
+      });
+    }
+
+    window.onYouTubeIframeAPIReady = function () {
+      player = new YT.Player('player', {
+        width:'100%', height:'100%', playerVars:{ playsinline:1, controls:1, rel:0 },
+        events:{
+          onReady:() => { playerReady = true; player.setVolume(Number($('volume').value)); setStatus('Player ready. Add a station or join a listening room.'); if (activeStation) cueStation(activeStation); if (lastRoomState) applyRoomState(lastRoomState); },
+          onStateChange:event => { updateTrackTitle(); if (event.data === YT.PlayerState.PLAYING) setPlayingUI(true); if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.CUED) setPlayingUI(false); if (isHost && currentRoom) setTimeout(publishPlayback, 300); },
+          onError:event => setStatus('YouTube error ' + event.data + '. This playlist or video may not allow embedded playback.')
+        }
+      });
+    };
+    const apiScript = document.createElement('script'); apiScript.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(apiScript);
+
+    $('stationForm').addEventListener('submit', event => {
+      event.preventDefault(); const playlistId = playlistIdFromUrl($('playlistUrl').value), name = $('stationName').value.trim();
+      if (!playlistId || !/^[\w-]+$/.test(playlistId)) { setStatus('Playlist link needs a valid list= ID. Copy the playlist URL from YouTube.'); return; }
+      if (!name) return;
+      const station = { id:(crypto.randomUUID ? crypto.randomUUID() : String(Date.now())), name, playlistId };
+      stations.push(station); saveStations(); renderStations(); $('stationForm').reset(); if (!activeStation || !currentRoom) tuneStation(station, currentRoom && isHost); setStatus('Station saved to this browser.');
+    });
+    $('createRoom').addEventListener('click', () => send({ type:'create_room' }));
+    $('joinRoom').addEventListener('click', () => {
+      const roomCode = $('roomCodeInput').value.trim().toUpperCase();
+      if (!/^[A-HJ-NP-Z2-9]{6}$/.test(roomCode)) { setStatus('Enter the six-character room code shared by the host.'); return; }
+      send({ type:'join_room', roomCode });
+    });
+    $('roomCodeInput').addEventListener('input', event => { event.target.value = event.target.value.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, ''); });
+    $('leaveRoom').addEventListener('click', () => send({ type:'leave_room' }));
+    $('copyRoom').addEventListener('click', async () => { try { await navigator.clipboard.writeText(currentRoom); showToast('Room code copied.'); } catch { showToast('Room code: ' + currentRoom); } });
+    $('previous').addEventListener('click', () => control('previous')); $('next').addEventListener('click', () => control('next')); $('playPause').addEventListener('click', () => control('toggle'));
+    $('mute').addEventListener('click', () => { if (!playerReady) return; isMuted = !isMuted; isMuted ? player.mute() : player.unMute(); $('mute').innerHTML = isMuted ? '&#128263;' : '&#128266;'; });
+    $('volume').addEventListener('input', event => { if (playerReady) player.setVolume(Number(event.target.value)); });
+    window.addEventListener('beforeunload', () => { if (socket && socket.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type:'leave_room' })); });
+    setInterval(() => { if (isHost && currentRoom) publishPlayback(); }, 4000);
+    connect(); renderStations(); updateRoomView();
+  </script>
+</body>
+</html>
