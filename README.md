@@ -12,6 +12,22 @@ A game-agnostic radio companion for listening to YouTube playlists together. ROA
 
 The room host controls station changes, play/pause, and track skips. Each listener controls their own volume. Keep the YouTube player visible; the browser may require a click on Play before playback begins.
 
+## Use it alongside a game on Windows
+
+The optional Electron companion opens ROAD FM in an always-on-top compact window and provides system-wide radio shortcuts while the game is focused. Use the game in borderless-windowed or windowed mode; exclusive fullscreen can cover desktop overlays.
+
+1. Run `desktop/start.cmd` from the cloned repository. On first run it installs Electron.
+2. In the overlay, choose **Manage stations** to add presets, then close the library window.
+3. Join or create a listening room in the overlay. Start playback once inside YouTube if prompted.
+
+Shortcuts while the desktop companion is running:
+
+- `Ctrl+Alt+Up/Down`: previous/next station
+- `Ctrl+Alt+Left/Right`: previous/next track
+- `Ctrl+Alt+Space`: play/pause
+
+This is a desktop overlay, not an injected game mod. It cannot mix the music into the game's 3D audio or appear over exclusive-fullscreen rendering. The YouTube player remains visible in the overlay.
+
 ## Deploy from GitHub
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/afuchi/road-fm)

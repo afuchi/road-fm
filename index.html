@@ -68,6 +68,10 @@
     .track-title { min-height:18px; margin:7px 0 0; overflow:hidden; color:var(--muted); font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
     .on-air { display:flex; align-items:center; gap:7px; flex:none; color:var(--green); font-size:10px; }
     .on-air::before { width:7px; aspect-ratio:1; border-radius:50%; background:currentColor; content:""; }
+    .overlay-tools { display:none; align-items:center; gap:5px; margin-top:7px; }
+    .overlay-tools button { min-height:30px; padding:0 9px; font-size:11px; }
+    .channel-position { min-width:46px; color:var(--muted); font-size:10px; text-align:center; }
+    .overlay-hotkeys { display:none; color:var(--faint); font-size:9px; }
     .player-frame { width:100%; aspect-ratio:16/9; max-height:400px; overflow:hidden; border:1px solid var(--line); background:#080a09; }
     #player,#player iframe { width:100%; height:100%; }
     .transport { display:flex; align-items:center; justify-content:space-between; gap:14px; min-height:70px; border-bottom:1px solid var(--line); }
@@ -84,6 +88,31 @@
     @media(max-width:760px) { .app{padding:0 16px 20px}.listening-room{grid-template-columns:1fr;gap:12px}.room-actions{flex-wrap:wrap}.room-info{grid-column:auto}.workspace{grid-template-columns:1fr}.stations{padding:20px 0;border-right:0;border-bottom:1px solid var(--line)}.deck{padding:20px 0}.now-playing h2{font-size:26px} }
     @media(max-width:460px) { .masthead{min-height:67px}.brand-caption{display:none}.room-actions{display:grid;grid-template-columns:1fr 1fr}.room-actions .primary{grid-column:1/-1}.join-code{width:100%}.room-info.active{flex-wrap:wrap}.transport{align-items:flex-start;flex-direction:column;padding:12px 0}.transport-buttons{width:100%;justify-content:space-between}.volume{width:100%;justify-content:space-between}.volume input{flex:1}.status-line{align-items:flex-start;flex-direction:column} }
     @media(prefers-reduced-motion:reduce) { *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important} }
+    body.overlay-mode .app { width:100%; min-height:100vh; padding:7px 11px 9px; }
+    body.overlay-mode .masthead { min-height:42px; }
+    body.overlay-mode .brand-mark { width:30px; height:30px; font-size:14px; }
+    body.overlay-mode .brand-name { font-size:21px; }
+    body.overlay-mode .brand-caption, body.overlay-mode .eyebrow, body.overlay-mode .stations, body.overlay-mode .fine-print { display:none; }
+    body.overlay-mode .listening-room { grid-template-columns:1fr; gap:7px; padding:9px 0; }
+    body.overlay-mode .listening-room h1 { font-size:19px; }
+    body.overlay-mode .room-actions { gap:5px; }
+    body.overlay-mode .room-actions button, body.overlay-mode .room-actions input, body.overlay-mode .room-info button { min-height:32px; }
+    body.overlay-mode .join-code { width:100px; }
+    body.overlay-mode .room-info { gap:7px; }
+    body.overlay-mode .workspace { display:block; min-height:0; }
+    body.overlay-mode .deck { padding:9px 0 0; }
+    body.overlay-mode .now-playing { align-items:center; gap:8px; margin-bottom:7px; }
+    body.overlay-mode .now-playing h2 { max-width:290px; font-size:21px; }
+    body.overlay-mode .track-title { margin-top:3px; }
+    body.overlay-mode .overlay-tools { display:flex; }
+    body.overlay-mode .player-frame { max-height:none; }
+    body.overlay-mode .transport { min-height:48px; gap:8px; }
+    body.overlay-mode .transport-buttons { gap:4px; }
+    body.overlay-mode .transport button { min-width:36px; min-height:34px; padding:0 7px; }
+    body.overlay-mode .transport button.play-button { min-width:78px; }
+    body.overlay-mode .volume input { width:80px; }
+    body.overlay-mode .status-line { min-height:25px; padding-top:7px; }
+    body.overlay-mode .overlay-hotkeys { display:block; margin-top:4px; }
   </style>
 </head>
 <body>
@@ -108,13 +137,14 @@
         </form>
       </aside>
       <main class="deck">
-        <div class="now-playing"><div><div class="station-tag">NOW TUNED TO</div><h2 id="currentStation">NO STATION SELECTED</h2><p id="trackTitle" class="track-title">Save a playlist, then tune in.</p></div><div id="onAir" class="on-air">STANDBY</div></div>
+        <div class="now-playing"><div><div class="station-tag">NOW TUNED TO</div><h2 id="currentStation">NO STATION SELECTED</h2><div class="overlay-tools"><button id="previousStation" title="Previous station · Ctrl+Alt+Up" aria-label="Previous station" disabled>&#9664; CH</button><span id="channelPosition" class="channel-position">-- / 00</span><button id="nextStation" title="Next station · Ctrl+Alt+Down" aria-label="Next station" disabled>CH &#9654;</button><button id="manageStations" class="ghost">Manage stations</button></div><p id="trackTitle" class="track-title">Save a playlist, then tune in.</p></div><div id="onAir" class="on-air">STANDBY</div></div>
         <div class="player-frame"><div id="player"></div></div>
         <div class="transport" aria-label="Radio controls">
           <div class="transport-buttons"><button id="previous" title="Previous track" aria-label="Previous track" disabled>&#9198;</button><button id="playPause" class="primary play-button" disabled><span id="playIcon" aria-hidden="true">&#9654;</span> <span id="playLabel">Play</span></button><button id="next" title="Next track" aria-label="Next track" disabled>&#9197;</button><button id="mute" title="Mute" aria-label="Mute" disabled>&#128266;</button></div>
           <label class="volume" for="volume">LOCAL VOLUME <input id="volume" type="range" min="0" max="100" value="65"></label>
         </div>
         <div class="status-line"><span id="status" role="status" aria-live="polite">Starting radio network...</span><span id="controlHint">Create a room to listen together.</span></div>
+        <div class="overlay-hotkeys">CTRL+ALT+UP/DOWN CHANNEL · LEFT/RIGHT TRACK · SPACE PLAY/PAUSE</div>
         <p class="fine-print">Playback uses YouTube's official embedded player on each listener's device. The room synchronizes station and transport controls, not audio. Keep the player visible. Public or unlisted playlists work best; embeds can be limited by region, age, or video settings. ROAD FM runs alongside your game and does not modify its audio.</p>
       </main>
     </div>
@@ -122,8 +152,9 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script>
     const STORAGE_KEY = 'roadfm.stations.v1';
-    const controls = ['previous', 'playPause', 'next', 'mute'];
+    const controls = ['previous', 'playPause', 'next', 'mute', 'previousStation', 'nextStation'];
     const $ = id => document.getElementById(id);
+    if (new URLSearchParams(location.search).get('overlay') === '1') document.body.classList.add('overlay-mode');
     let player = null, playerReady = false, socket = null, currentRoom = '', isHost = false, members = 0;
     let stations = readStations(), activeStation = null, loadedPlaylistId = '', lastRoomState = null, isMuted = false, toastTimer;
 
@@ -141,6 +172,8 @@
     function setControlAccess() {
       const enabled = !!activeStation && (isHost || !currentRoom);
       controls.forEach(id => $(id).disabled = !enabled);
+      $('previousStation').disabled = !enabled || stations.length < 2;
+      $('nextStation').disabled = !enabled || stations.length < 2;
       $('roleLabel').textContent = currentRoom ? (isHost ? 'HOST CONTROLS' : 'LISTENING') : '';
       $('controlHint').textContent = currentRoom ? (isHost ? 'Your controls lead the room. Volume stays local.' : 'The host controls the station. Your volume stays local.') : 'Create a room to listen together.';
       renderStations();
@@ -153,6 +186,8 @@
     }
     function renderStations() {
       const list = $('stationList'); list.replaceChildren(); $('stationCount').textContent = stations.length + ' SAVED';
+      const activeIndex = stations.findIndex(station => activeStation && station.id === activeStation.id);
+      $('channelPosition').textContent = (activeIndex >= 0 ? String(activeIndex + 1).padStart(2, '0') : '--') + ' / ' + String(stations.length).padStart(2, '0');
       if (!stations.length) { const empty = document.createElement('li'); empty.className = 'empty-stations'; empty.textContent = 'No presets yet. Add a YouTube playlist to build your dial.'; list.append(empty); return; }
       stations.forEach((station, index) => {
         const row = document.createElement('li'); row.className = 'station-row';
@@ -188,6 +223,13 @@
       if (currentRoom && !isHost) return;
       activeStation = station; $('currentStation').textContent = station.name; $('trackTitle').textContent = 'Playlist cued. Press Play to tune in.';
       cueStation(station); renderStations(); setControlAccess(); setStatus('Tuned to ' + station.name + '.'); if (broadcast) publishStation();
+    }
+    function changeStation(direction) {
+      if (currentRoom && !isHost) { showToast('Only the room host can change stations.'); return; }
+      if (stations.length < 2) { showToast('Add at least two station presets to switch channels.'); return; }
+      const currentIndex = stations.findIndex(station => activeStation && station.id === activeStation.id);
+      const nextIndex = (currentIndex + direction + stations.length) % stations.length;
+      tuneStation(stations[nextIndex]);
     }
     function syncTransport(state) {
       if (!playerReady || !player || !state || state.playlistId !== loadedPlaylistId) return;
@@ -273,8 +315,18 @@
     $('leaveRoom').addEventListener('click', () => send({ type:'leave_room' }));
     $('copyRoom').addEventListener('click', async () => { try { await navigator.clipboard.writeText(currentRoom); showToast('Room code copied.'); } catch { showToast('Room code: ' + currentRoom); } });
     $('previous').addEventListener('click', () => control('previous')); $('next').addEventListener('click', () => control('next')); $('playPause').addEventListener('click', () => control('toggle'));
+    $('previousStation').addEventListener('click', () => changeStation(-1)); $('nextStation').addEventListener('click', () => changeStation(1));
+    $('manageStations').addEventListener('click', () => { if (window.roadFmDesktop) window.roadFmDesktop.openLibrary(); else setStatus('Manage presets in the Station Presets panel.'); });
     $('mute').addEventListener('click', () => { if (!playerReady) return; isMuted = !isMuted; isMuted ? player.mute() : player.unMute(); $('mute').innerHTML = isMuted ? '&#128263;' : '&#128266;'; });
     $('volume').addEventListener('input', event => { if (playerReady) player.setVolume(Number(event.target.value)); });
+    window.addEventListener('storage', event => { if (event.key === STORAGE_KEY) { stations = readStations(); renderStations(); setControlAccess(); } });
+    if (window.roadFmDesktop) window.roadFmDesktop.onCommand(command => {
+      if (command === 'previous-station') changeStation(-1);
+      if (command === 'next-station') changeStation(1);
+      if (command === 'previous-track') control('previous');
+      if (command === 'next-track') control('next');
+      if (command === 'toggle-play') control('toggle');
+    });
     window.addEventListener('beforeunload', () => { if (socket && socket.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type:'leave_room' })); });
     setInterval(() => { if (isHost && currentRoom) publishPlayback(); }, 4000);
     connect(); renderStations(); updateRoomView();
