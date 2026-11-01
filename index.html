@@ -114,13 +114,18 @@
     body.overlay-mode #controlHint { display:none; }
     body.overlay-mode .overlay-hotkeys { display:none; }
     body.player-only { min-width:0; min-height:0; overflow:hidden; }
-    body.player-only .app { width:200px; height:208px; min-height:0; padding:0; animation:none; }
+    body.player-only .app { width:200px; height:252px; min-height:0; padding:0; animation:none; }
     body.player-only .app::before { display:block; height:8px; content:""; -webkit-app-region:drag; }
-    body.player-only .masthead, body.player-only .listening-room, body.player-only .stations, body.player-only .fine-print, body.player-only .now-playing, body.player-only .transport, body.player-only .status-line, body.player-only .overlay-hotkeys, body.player-only .toast { display:none; }
+    body.player-only .masthead, body.player-only .listening-room, body.player-only .stations, body.player-only .fine-print, body.player-only .now-playing, body.player-only .status-line, body.player-only .overlay-hotkeys, body.player-only .toast { display:none; }
     body.player-only .workspace { display:block; min-height:0; }
     body.player-only .deck { display:block; width:200px; height:200px; padding:0; }
     body.player-only .player-frame { width:200px; height:200px; max-height:none; aspect-ratio:auto; margin:0; border:0; }
     body.player-only #player, body.player-only #player iframe { width:200px; height:200px; }
+    body.player-only .transport { display:flex; width:200px; min-height:44px; height:44px; justify-content:center; padding:5px 4px; border:0; }
+    body.player-only .transport-buttons { width:100%; justify-content:space-between; gap:3px; }
+    body.player-only .transport-buttons button { width:36px; min-width:36px; min-height:34px; padding:0 4px; font-size:12px; }
+    body.player-only .transport-buttons button.play-button { width:74px; min-width:74px; font-size:11px; }
+    body.player-only .volume { display:none; }
   </style>
 </head>
 <body>
@@ -177,7 +182,7 @@
           name:(query.get('stationName') || 'Mini player').slice(0, 36),
           playlistId:overlayPlaylistId
         }
-      : null;
+      : query.get('playerOnly') === '1' ? stations[0] || null : null;
     const overlayPlayback = overlayStation ? {
       playlistId:overlayPlaylistId,
       index:Math.max(0, Math.min(10000, Number(query.get('index')) || 0)),
@@ -352,7 +357,7 @@
       url.searchParams.set('index', String(playerReady && player.getPlaylistIndex() >= 0 ? player.getPlaylistIndex() : 0));
       url.searchParams.set('time', String(playerReady ? Math.max(0, player.getCurrentTime() || 0) : 0));
       url.searchParams.set('playing', String(playerReady && player.getPlayerState() === YT.PlayerState.PLAYING ? 1 : 0));
-      const popup = window.open(url.toString(), 'roadfm-mini-player', 'popup,width=260,height=300,resizable=no,menubar=no,toolbar=no,location=no,status=no');
+      const popup = window.open(url.toString(), 'roadfm-mini-player', 'popup,width=260,height=340,resizable=no,menubar=no,toolbar=no,location=no,status=no');
       if (!popup) {
         showToast('Popup blocked. Allow popups for ROAD FM to open the mini player.');
         return;
@@ -370,7 +375,12 @@
     $('previous').addEventListener('click', () => control('previous')); $('next').addEventListener('click', () => control('next')); $('playPause').addEventListener('click', () => control('toggle'));
     $('previousStation').addEventListener('click', () => changeStation(-1)); $('nextStation').addEventListener('click', () => changeStation(1));
     $('manageStations').addEventListener('click', () => { if (window.roadFmDesktop) window.roadFmDesktop.openLibrary(); else setStatus('Manage presets in the Station Presets panel.'); });
-    $('mute').addEventListener('click', () => { if (!playerReady) return; isMuted = !isMuted; isMuted ? player.mute() : player.unMute(); $('mute').innerHTML = isMuted ? '&#128263;' : '&#128266;'; });
+    $('mute').addEventListener('click', () => {
+      if (!playerReady) return;
+      isMuted = !isMuted; isMuted ? player.mute() : player.unMute();
+      $('mute').innerHTML = isMuted ? '&#128263;' : '&#128266;';
+      $('mute').title = isMuted ? 'Unmute' : 'Mute'; $('mute').setAttribute('aria-label', $('mute').title);
+    });
     $('volume').addEventListener('input', event => { if (playerReady) player.setVolume(Number(event.target.value)); });
     window.addEventListener('storage', event => { if (event.key === STORAGE_KEY) { stations = readStations(); renderStations(); setControlAccess(); } });
     if (window.roadFmDesktop) window.roadFmDesktop.onCommand(command => {

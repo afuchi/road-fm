@@ -12,7 +12,7 @@ A game-agnostic radio companion for listening to YouTube playlists together. ROA
 
 The room host controls station changes, play/pause, and track skips. Each listener controls their own volume. Keep the YouTube player visible; the browser may require a click on Play before playback begins.
 
-On the website, select a station and choose **Open overlay player** to open its current playlist in a compact popup. The browser may require popups to be allowed, and web popups cannot be forced to stay above other apps.
+On the website, select a station and choose **Open overlay player** to open its current playlist in a compact popup with previous, play/pause, next, and mute controls. The browser may require popups to be allowed, and web popups cannot be forced to stay above other apps.
 
 ## Use it alongside a game on Windows
 
@@ -29,7 +29,7 @@ Shortcuts while the desktop companion is running:
 - `Ctrl+Alt+Space`: play/pause
 - `Ctrl+Alt+M`: open the full app
 
-This is a desktop overlay, not an injected game mod. It cannot mix music into the game's 3D audio or appear over exclusive-fullscreen rendering. The frameless, video-only window keeps the YouTube player at its 200×200 minimum supported embed size and has a narrow drag strip above it. Hiding or reducing YouTube further isn't supported by its embedded player. A video-free radio mode would need separately licensed audio-only streams.
+This is a desktop overlay, not an injected game mod. It cannot mix music into the game's 3D audio or appear over exclusive-fullscreen rendering. The frameless window keeps the YouTube player at its 200×200 minimum supported embed size, adds playback buttons below it, and has a narrow drag strip above it. Hiding or reducing YouTube further isn't supported by its embedded player. A video-free radio mode would need separately licensed audio-only streams.
 
 ## Deploy from GitHub
 
