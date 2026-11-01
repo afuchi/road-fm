@@ -94,8 +94,8 @@
     body.overlay-mode .brand-name { font-size:21px; }
     body.overlay-mode .masthead, body.overlay-mode .listening-room, body.overlay-mode .stations, body.overlay-mode .fine-print, body.overlay-mode .eyebrow { display:none; }
     body.overlay-mode .workspace { display:block; min-height:0; }
-    body.overlay-mode .deck { display:grid; grid-template-columns:200px minmax(0,1fr); grid-template-rows:auto auto auto auto; align-items:center; column-gap:12px; row-gap:1px; padding:0; }
-    body.overlay-mode .player-frame { grid-column:1; grid-row:1/5; width:200px; height:200px; max-height:none; aspect-ratio:auto; margin:0; }
+    body.overlay-mode .deck { display:grid; grid-template-columns:200px minmax(0,1fr); grid-template-rows:auto auto auto; align-items:center; column-gap:8px; row-gap:1px; padding:0; }
+    body.overlay-mode .player-frame { grid-column:1; grid-row:1/4; width:200px; height:200px; max-height:none; aspect-ratio:auto; margin:0; }
     body.overlay-mode .now-playing { grid-column:2; grid-row:1; align-items:flex-start; gap:6px; margin:0; }
     body.overlay-mode .now-playing h2 { max-width:260px; font-size:18px; }
     body.overlay-mode .track-title { max-width:320px; margin-top:2px; }
@@ -110,7 +110,7 @@
     body.overlay-mode .volume input { width:100px; }
     body.overlay-mode .status-line { grid-column:2; grid-row:3; min-height:16px; padding:0; font-size:9px; }
     body.overlay-mode #controlHint { display:none; }
-    body.overlay-mode .overlay-hotkeys { grid-column:2; grid-row:4; display:block; margin:0; font-size:8px; white-space:nowrap; }
+    body.overlay-mode .overlay-hotkeys { display:none; }
   </style>
 </head>
 <body>

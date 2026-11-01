@@ -26,7 +26,7 @@ Shortcuts while the desktop companion is running:
 - `Ctrl+Alt+Left/Right`: previous/next track
 - `Ctrl+Alt+Space`: play/pause
 
-This is a desktop overlay, not an injected game mod. It cannot mix music into the game's 3D audio or appear over exclusive-fullscreen rendering. The compact view keeps a 200×200 YouTube player visible; hiding or reducing YouTube to audio-only isn't supported by its embedded player. A video-free radio mode would need separately licensed audio-only streams.
+This is a desktop overlay, not an injected game mod. It cannot mix music into the game's 3D audio or appear over exclusive-fullscreen rendering. The compact window is 520×260 and keeps the YouTube player at its 200×200 minimum supported embed size; hiding or reducing YouTube further isn't supported by its embedded player. A video-free radio mode would need separately licensed audio-only streams.
 
 ## Deploy from GitHub
 
