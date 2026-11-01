@@ -12,6 +12,8 @@ A game-agnostic radio companion for listening to YouTube playlists together. ROA
 
 The room host controls station changes, play/pause, and track skips. Each listener controls their own volume. Keep the YouTube player visible; the browser may require a click on Play before playback begins.
 
+On the website, select a station and choose **Open overlay player** to open its current playlist in a compact popup. The browser may require popups to be allowed, and web popups cannot be forced to stay above other apps.
+
 ## Use it alongside a game on Windows
 
 The optional Electron companion opens ROAD FM in an always-on-top compact window and provides system-wide radio shortcuts while the game is focused. Use the game in borderless-windowed or windowed mode; exclusive fullscreen can cover desktop overlays.
