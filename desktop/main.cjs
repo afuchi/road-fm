@@ -40,15 +40,15 @@ function configureExternalLinks(window) {
 
 function createOverlay() {
   overlayWindow = new BrowserWindow({
-    width: 200,
-    height: 252,
-    minWidth: 200,
-    minHeight: 252,
+    width: 240,
+    height: 370,
+    minWidth: 240,
+    minHeight: 370,
     frame: false,
     resizable: false,
     autoHideMenuBar: true,
     alwaysOnTop: true,
-    backgroundColor: '#171a18',
+    backgroundColor: '#4e321e',
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,

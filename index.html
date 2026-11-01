@@ -73,6 +73,7 @@
     .overlay-tools button { min-height:30px; padding:0 9px; font-size:11px; }
     .channel-position { min-width:46px; color:var(--muted); font-size:10px; text-align:center; }
     .overlay-hotkeys { display:none; color:var(--faint); font-size:9px; }
+    .radio-dial { display:none; }
     .player-frame { width:100%; aspect-ratio:16/9; max-height:400px; overflow:hidden; border:1px solid var(--line); background:#080a09; }
     #player,#player iframe { width:100%; height:100%; }
     .transport { display:flex; align-items:center; justify-content:space-between; gap:14px; min-height:70px; border-bottom:1px solid var(--line); }
@@ -113,18 +114,34 @@
     body.overlay-mode .status-line { grid-column:2; grid-row:3; min-height:16px; padding:0; font-size:9px; }
     body.overlay-mode #controlHint { display:none; }
     body.overlay-mode .overlay-hotkeys { display:none; }
-    body.player-only { min-width:0; min-height:0; overflow:hidden; }
-    body.player-only .app { width:200px; height:252px; min-height:0; padding:0; animation:none; }
-    body.player-only .app::before { display:block; height:8px; content:""; -webkit-app-region:drag; }
-    body.player-only .masthead, body.player-only .listening-room, body.player-only .stations, body.player-only .fine-print, body.player-only .now-playing, body.player-only .status-line, body.player-only .overlay-hotkeys, body.player-only .toast { display:none; }
+    body.player-only { min-width:0; min-height:0; overflow:hidden; background:transparent; }
+    body.player-only .app { width:240px; height:370px; min-height:0; padding:8px 10px 9px; overflow:hidden; border:2px solid #aa874e; border-radius:8px; background:linear-gradient(112deg,#785332 0%,#4e321e 32%,#684629 62%,#392519 100%); box-shadow:inset 0 1px #e3c88a66,inset 0 0 0 2px #25180f,0 5px 16px #0009; animation:none; }
+    body.player-only .app::before { display:flex; align-items:center; justify-content:center; height:12px; margin-bottom:0; color:#382719; background:linear-gradient(90deg,#c8a86c,#8f7042 18%,#d1b478 50%,#8f7042 82%,#c8a86c); content:"ROAD FM  ·  TABLE RADIO"; font:600 7px/1 var(--mono); letter-spacing:.13em; text-shadow:0 1px #f4dfae88; -webkit-app-region:drag; user-select:none; }
+    body.player-only .masthead, body.player-only .listening-room, body.player-only .stations, body.player-only .fine-print, body.player-only .overlay-hotkeys, body.player-only .toast { display:none; }
     body.player-only .workspace { display:block; min-height:0; }
-    body.player-only .deck { display:block; width:200px; height:200px; padding:0; }
-    body.player-only .player-frame { width:200px; height:200px; max-height:none; aspect-ratio:auto; margin:0; border:0; }
+    body.player-only .deck { display:grid; grid-template-columns:1fr; grid-template-rows:45px 23px 200px 38px 18px; align-content:start; justify-items:center; gap:3px; width:216px; height:auto; padding:0; }
+    body.player-only .now-playing { position:relative; display:block; grid-column:1; grid-row:1; width:100%; height:45px; margin:0; }
+    body.player-only .now-playing > div:first-child { width:100%; min-width:0; }
+    body.player-only .station-tag { margin:0 42px 2px 0; color:#e4c78b; font-size:8px; letter-spacing:.13em; }
+    body.player-only .now-playing h2 { max-width:100%; overflow:hidden; padding-right:40px; color:#fff0d2; font:700 16px/.95 var(--display); text-overflow:ellipsis; white-space:nowrap; }
+    body.player-only .track-title { display:block; min-height:0; max-width:100%; margin:3px 0 0; overflow:hidden; color:#e2d0ad; font-size:10px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
+    body.player-only .on-air { position:absolute; top:1px; right:0; gap:4px; color:#e8c15d; font-size:7px; letter-spacing:.06em; }
+    body.player-only .on-air::before { width:6px; box-shadow:0 0 7px currentColor; }
+    body.player-only .overlay-tools { display:none; }
+    body.player-only .radio-dial { position:relative; display:flex; grid-column:1; grid-row:2; align-items:center; gap:7px; width:200px; height:23px; padding:0 5px; border-top:1px solid #b89962; border-bottom:1px solid #3a2818; color:#e5cc98; background:linear-gradient(#3d2919,#573a22); font:500 6px/1 var(--mono); letter-spacing:.06em; white-space:nowrap; }
+    body.player-only .radio-dial i { position:relative; flex:1; height:12px; border-bottom:1px solid #d5b879; background:repeating-linear-gradient(90deg,transparent 0 5px,#d1b779 5px 6px,transparent 6px 10px); }
+    body.player-only .radio-dial i::after { position:absolute; top:-2px; left:50%; width:2px; height:15px; background:#ffbf58; box-shadow:0 0 7px #ffad37; content:""; }
+    body.player-only .player-frame { grid-column:1; grid-row:3; width:200px; height:200px; max-height:none; aspect-ratio:auto; margin:0; border:0; background:#080a09; box-shadow:0 0 0 2px #b08a4d,0 0 0 3px #24170e; }
     body.player-only #player, body.player-only #player iframe { width:200px; height:200px; }
-    body.player-only .transport { display:flex; width:200px; min-height:44px; height:44px; justify-content:center; padding:5px 4px; border:0; }
-    body.player-only .transport-buttons { width:100%; justify-content:space-between; gap:3px; }
-    body.player-only .transport-buttons button { width:36px; min-width:36px; min-height:34px; padding:0 4px; font-size:12px; }
-    body.player-only .transport-buttons button.play-button { width:74px; min-width:74px; font-size:11px; }
+    body.player-only .transport { display:flex; grid-column:1; grid-row:4; width:200px; min-height:38px; height:38px; justify-content:center; padding:2px 0; border:0; }
+    body.player-only .transport-buttons { width:100%; justify-content:center; gap:3px; }
+    body.player-only .transport-buttons button { width:36px; min-width:36px; min-height:34px; padding:0 4px; border-color:#997943; color:#f3e5c4; background:linear-gradient(#634627,#3a2819); box-shadow:inset 0 1px #e3c88a33,0 1px 2px #21160f; font-size:12px; }
+    body.player-only .transport-buttons button:hover:not(:disabled) { border-color:#ead29a; background:linear-gradient(#785832,#4a321e); }
+    body.player-only .transport-buttons button.play-button { width:74px; min-width:74px; border-color:#e0bb68; color:#2d2014; background:linear-gradient(#f2d48e,#bd9146); font-size:11px; }
+    body.player-only .transport-buttons button.play-button:hover:not(:disabled) { background:linear-gradient(#ffe5a4,#d3a855); }
+    body.player-only .status-line { display:block; grid-column:1; grid-row:5; width:200px; min-width:0; min-height:18px; height:18px; overflow:hidden; padding:0; color:#f0dfbd; font-size:10px; line-height:18px; text-overflow:ellipsis; white-space:nowrap; }
+    body.player-only .status-line #status { display:block; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    body.player-only .status-line #controlHint { display:none; }
     body.player-only .volume { display:none; }
   </style>
 </head>
@@ -154,6 +171,7 @@
       </aside>
       <main class="deck">
         <div class="now-playing"><div><div class="station-tag">NOW TUNED TO</div><h2 id="currentStation">NO STATION SELECTED</h2><div class="overlay-tools"><button id="previousStation" title="Previous station · Ctrl+Alt+Up" aria-label="Previous station" disabled>&#9664; CH</button><span id="channelPosition" class="channel-position">-- / 00</span><button id="nextStation" title="Next station · Ctrl+Alt+Down" aria-label="Next station" disabled>CH &#9654;</button><button id="manageStations" class="ghost">Full app</button></div><p id="trackTitle" class="track-title">Save a playlist, then tune in.</p></div><div id="onAir" class="on-air">STANDBY</div></div>
+        <div class="radio-dial" aria-hidden="true"><span>ROAD FM</span><i></i><span>CHANNEL</span></div>
         <div class="player-frame"><div id="player"></div></div>
         <div class="transport" aria-label="Radio controls">
           <div class="transport-buttons"><button id="previous" title="Previous track" aria-label="Previous track" disabled>&#9198;</button><button id="playPause" class="primary play-button" disabled><span id="playIcon" aria-hidden="true">&#9654;</span> <span id="playLabel">Play</span></button><button id="next" title="Next track" aria-label="Next track" disabled>&#9197;</button><button id="mute" title="Mute" aria-label="Mute" disabled>&#128266;</button></div>
@@ -191,6 +209,12 @@
       updatedAt:Date.now()
     } : null;
     if (overlayStation) activeStation = overlayStation;
+    if (overlayStation && query.get('playerOnly') === '1') {
+      $('currentStation').textContent = overlayStation.name;
+      $('trackTitle').textContent = 'Ready · press Play to tune in.';
+    } else if (query.get('playerOnly') === '1') {
+      $('trackTitle').textContent = 'Select a station in the full app.';
+    }
 
     function readStations() {
       try { const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); return Array.isArray(data) ? data.filter(item => item && item.id && item.name && item.playlistId) : []; }
@@ -325,13 +349,31 @@
         width:'100%', height:'100%', playerVars:{ playsinline:1, controls:1, rel:0 },
         events:{
           onReady:() => {
-            playerReady = true; player.setVolume(Number($('volume').value)); setStatus('Player ready. Add a station or join a listening room.');
+            playerReady = true; player.setVolume(Number($('volume').value));
+            setStatus(document.body.classList.contains('player-only')
+              ? (activeStation ? 'Ready · press Play to tune in' : 'No station · open full app')
+              : 'Player ready. Select a station or join a room.');
             if (activeStation) cueStation(activeStation, overlayPlayback ? overlayPlayback.index : 0);
             if (overlayPlayback && overlayPlayback.playing) setTimeout(() => syncTransport(overlayPlayback), 1200);
             if (lastRoomState) applyRoomState(lastRoomState);
           },
-          onStateChange:event => { updateTrackTitle(); if (event.data === YT.PlayerState.PLAYING) setPlayingUI(true); if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.CUED) setPlayingUI(false); if (isHost && currentRoom) setTimeout(publishPlayback, 300); },
-          onError:event => setStatus('YouTube error ' + event.data + '. This playlist or video may not allow embedded playback.')
+          onStateChange:event => {
+            updateTrackTitle();
+            if (event.data === YT.PlayerState.PLAYING) setPlayingUI(true);
+            if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.CUED) setPlayingUI(false);
+            if (document.body.classList.contains('player-only')) {
+              const playerStatus = event.data === YT.PlayerState.PLAYING ? 'Playing'
+                : event.data === YT.PlayerState.PAUSED ? 'Paused'
+                : event.data === YT.PlayerState.BUFFERING ? 'Buffering…'
+                : event.data === YT.PlayerState.ENDED ? 'Playlist ended'
+                : activeStation ? 'Ready · press Play' : 'No station · open full app';
+              setStatus(playerStatus);
+            }
+            if (isHost && currentRoom) setTimeout(publishPlayback, 300);
+          },
+          onError:event => setStatus(document.body.classList.contains('player-only')
+            ? 'Playback error · code ' + event.data
+            : 'YouTube error ' + event.data + '. This playlist or video may not allow embedded playback.')
         }
       });
     };
@@ -357,7 +399,7 @@
       url.searchParams.set('index', String(playerReady && player.getPlaylistIndex() >= 0 ? player.getPlaylistIndex() : 0));
       url.searchParams.set('time', String(playerReady ? Math.max(0, player.getCurrentTime() || 0) : 0));
       url.searchParams.set('playing', String(playerReady && player.getPlayerState() === YT.PlayerState.PLAYING ? 1 : 0));
-      const popup = window.open(url.toString(), 'roadfm-mini-player', 'popup,width=260,height=340,resizable=no,menubar=no,toolbar=no,location=no,status=no');
+      const popup = window.open(url.toString(), 'roadfm-mini-player', 'popup,width=280,height=430,resizable=no,menubar=no,toolbar=no,location=no,status=no');
       if (!popup) {
         showToast('Popup blocked. Allow popups for ROAD FM to open the mini player.');
         return;
