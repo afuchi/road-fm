@@ -8,7 +8,8 @@ const commands = [
   ['Control+Alt+Down', 'next-station'],
   ['Control+Alt+Left', 'previous-track'],
   ['Control+Alt+Right', 'next-track'],
-  ['Control+Alt+Space', 'toggle-play']
+  ['Control+Alt+Space', 'toggle-play'],
+  ['Control+Alt+M', 'open-library']
 ];
 let overlayWindow;
 let libraryWindow;
@@ -16,7 +17,11 @@ let libraryWindow;
 function pageUrl(overlay) {
   const url = new URL(appUrl);
   url.searchParams.delete('overlay');
-  if (overlay) url.searchParams.set('overlay', '1');
+  url.searchParams.delete('playerOnly');
+  if (overlay) {
+    url.searchParams.set('overlay', '1');
+    url.searchParams.set('playerOnly', '1');
+  }
   return url.toString();
 }
 
@@ -35,11 +40,12 @@ function configureExternalLinks(window) {
 
 function createOverlay() {
   overlayWindow = new BrowserWindow({
-    width: 520,
-    height: 260,
-    minWidth: 500,
-    minHeight: 240,
-    title: 'ROAD FM',
+    width: 200,
+    height: 208,
+    minWidth: 200,
+    minHeight: 208,
+    frame: false,
+    resizable: false,
     autoHideMenuBar: true,
     alwaysOnTop: true,
     backgroundColor: '#171a18',
@@ -87,7 +93,11 @@ if (!hasSingleInstance) {
     createOverlay();
     for (const [accelerator, command] of commands) {
       if (!globalShortcut.register(accelerator, () => {
-        if (overlayWindow && !overlayWindow.isDestroyed()) overlayWindow.webContents.send('roadfm:command', command);
+        if (command === 'open-library') {
+          createLibraryWindow();
+        } else if (overlayWindow && !overlayWindow.isDestroyed()) {
+          overlayWindow.webContents.send('roadfm:command', command);
+        }
       })) console.warn(`Could not register ROAD FM shortcut: ${accelerator}`);
     }
     ipcMain.on('roadfm:open-library', event => {

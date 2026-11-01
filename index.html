@@ -111,6 +111,14 @@
     body.overlay-mode .status-line { grid-column:2; grid-row:3; min-height:16px; padding:0; font-size:9px; }
     body.overlay-mode #controlHint { display:none; }
     body.overlay-mode .overlay-hotkeys { display:none; }
+    body.player-only { min-width:0; min-height:0; overflow:hidden; }
+    body.player-only .app { width:200px; height:208px; min-height:0; padding:0; animation:none; }
+    body.player-only .app::before { display:block; height:8px; content:""; -webkit-app-region:drag; }
+    body.player-only .masthead, body.player-only .listening-room, body.player-only .stations, body.player-only .fine-print, body.player-only .now-playing, body.player-only .transport, body.player-only .status-line, body.player-only .overlay-hotkeys, body.player-only .toast { display:none; }
+    body.player-only .workspace { display:block; min-height:0; }
+    body.player-only .deck { display:block; width:200px; height:200px; padding:0; }
+    body.player-only .player-frame { width:200px; height:200px; max-height:none; aspect-ratio:auto; margin:0; border:0; }
+    body.player-only #player, body.player-only #player iframe { width:200px; height:200px; }
   </style>
 </head>
 <body>
@@ -152,7 +160,9 @@
     const STORAGE_KEY = 'roadfm.stations.v1';
     const controls = ['previous', 'playPause', 'next', 'mute', 'previousStation', 'nextStation'];
     const $ = id => document.getElementById(id);
-    if (new URLSearchParams(location.search).get('overlay') === '1') document.body.classList.add('overlay-mode');
+    const query = new URLSearchParams(location.search);
+    if (query.get('overlay') === '1') document.body.classList.add('overlay-mode');
+    if (query.get('playerOnly') === '1') document.body.classList.add('player-only');
     let player = null, playerReady = false, socket = null, currentRoom = '', isHost = false, members = 0;
     let stations = readStations(), activeStation = null, loadedPlaylistId = '', lastRoomState = null, isMuted = false, toastTimer;
 
