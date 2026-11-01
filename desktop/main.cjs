@@ -41,9 +41,9 @@ function configureExternalLinks(window) {
 function createOverlay() {
   overlayWindow = new BrowserWindow({
     width: 240,
-    height: 370,
+    height: 410,
     minWidth: 240,
-    minHeight: 370,
+    minHeight: 410,
     frame: false,
     resizable: false,
     autoHideMenuBar: true,

@@ -19,8 +19,8 @@ On the website, select a station and choose **Open overlay player** to open its 
 The optional Electron companion opens ROAD FM in an always-on-top compact window and provides system-wide radio shortcuts while the game is focused. Use the game in borderless-windowed or windowed mode; exclusive fullscreen can cover desktop overlays.
 
 1. Run `desktop/start.cmd` from the cloned repository. On first run it installs Electron.
-2. Press `Ctrl+Alt+M` to open the full app and add station presets or create/join a listening room. Presets are shared with the overlay.
-3. Use the overlay shortcuts to tune channels or tracks. Start playback once inside YouTube if prompted.
+2. Press `Ctrl+Alt+M` to open the full app and add station presets or create a room. Share the six-character ROAD FM room code with your convoy.
+3. Enter that room code in the overlay to join; the host controls stations and playback. Use the overlay for local volume and playback when not in a room.
 
 Shortcuts while the desktop companion is running:
 
